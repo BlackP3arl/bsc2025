@@ -7,7 +7,9 @@ A comprehensive strategic performance management platform designed for Maldives 
 - **Strategic Objectives Management**: Manage objectives across four BSC perspectives (Financial, Customer, Internal Process, Learning & Growth)
 - **KPI Management**: Define, track, and monitor key performance indicators
 - **Initiative Management**: Track strategic initiatives and projects
+- **Interactive Strategy Maps**: Visualize strategic relationships with traditional BSC matrix and mindmap views
 - **Division Management**: Support for 18 MTCC divisions with cascading scorecards
+- **Data Import/Export**: Bulk import capabilities via CSV files
 - **Executive Dashboard**: Real-time performance visualization and reporting
 - **Role-based Access Control**: Secure access based on user roles and divisions
 - **Responsive Design**: Mobile-friendly interface with MTCC branding
@@ -21,8 +23,10 @@ A comprehensive strategic performance management platform designed for Maldives 
 - **UI Framework**: Ant Design
 - **Icons**: Ant Design Icons
 - **Charts**: Ant Design Charts & Recharts
+- **Visualizations**: D3.js for interactive strategy maps
 - **State Management**: TanStack Query (React Query)
 - **Routing**: React Router DOM
+- **Data Processing**: Papa Parse for CSV import/export
 
 ## Getting Started
 
@@ -109,6 +113,60 @@ src/
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 
+## Deployment
+
+### Netlify Deployment
+
+The application is configured for deployment on Netlify. The `netlify.toml` file includes all necessary configuration.
+
+#### Method 1: Netlify CLI (Recommended)
+
+1. **Install Netlify CLI**:
+   ```bash
+   npm install -g netlify-cli
+   ```
+
+2. **Login to Netlify**:
+   ```bash
+   netlify login
+   ```
+
+3. **Deploy to Netlify**:
+   ```bash
+   netlify deploy --prod
+   ```
+
+#### Method 2: Git Integration
+
+1. Push your code to GitHub
+2. Connect your repository to Netlify
+3. Configure build settings:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+   - Node version: `18`
+
+#### Environment Variables for Netlify
+
+Add these environment variables in your Netlify site settings:
+
+```
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### Testing the Deployed Application
+
+1. **Strategy Map**: Navigate to `/strategy-map` to test both mindmap and BSC matrix views
+2. **Data Management**: Use `/data-management` to test CSV import functionality
+3. **User Management**: Access `/users` to manage user accounts and roles
+4. **Dashboard**: View `/dashboard` for executive insights
+
+### Default Admin Account
+
+- Email: `salle.kma@gmail.com`
+- Role: Admin
+- Access: Full system access
+
 ## Features Implementation Status
 
 ### Phase 1: Foundation ✅
@@ -117,17 +175,18 @@ src/
 - [x] Division and user management
 - [x] Core navigation structure
 
-### Phase 2: BSC Core (In Progress)
+### Phase 2: BSC Core ✅
 - [x] Strategic objectives management
-- [ ] KPI definition and management
-- [ ] Basic performance calculation engine
-- [ ] Simple reporting features
+- [x] KPI definition and management
+- [x] Strategic initiatives management
+- [x] Interactive strategy maps (BSC matrix and mindmap views)
+- [x] Data import/export via CSV files
 
-### Phase 3: Advanced Features (Planned)
-- [ ] Strategic initiatives management
-- [ ] Advanced analytics and reporting
+### Phase 3: Advanced Features (In Progress)
+- [x] Advanced analytics and reporting
 - [ ] Workflow and approval processes
 - [ ] Integration capabilities
+- [ ] Advanced dashboard features
 
 ### Phase 4: Polish & Deploy (Planned)
 - [ ] Performance optimization

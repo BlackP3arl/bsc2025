@@ -10,7 +10,6 @@ import {
   Alert,
   Statistic,
   Tabs,
-  Switch,
   Divider
 } from 'antd';
 import { 
@@ -22,18 +21,17 @@ import {
   FullscreenOutlined,
   SettingOutlined
 } from '@ant-design/icons';
-import { StrategyMap } from '../components/StrategyMap';
+import { InteractiveStrategyMap } from '../components/InteractiveStrategyMap';
+import { BSCStrategyMap } from '../components/BSCStrategyMap';
 import { useDivisions, useStrategicObjectives, useStrategicInitiatives, useKPIDefinitions } from '../hooks/useData';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
-const { TabPane } = Tabs;
 
 export const StrategyMapPage: React.FC = () => {
   const [selectedDivision, setSelectedDivision] = useState<string>('');
   const [selectedObjective, setSelectedObjective] = useState<any>(null);
-  const [showConnections, setShowConnections] = useState(true);
-  const [activeTab, setActiveTab] = useState('map');
+  const [activeTab, setActiveTab] = useState('traditional');
 
   const { data: divisions } = useDivisions();
   const { data: objectives } = useStrategicObjectives();
@@ -126,14 +124,15 @@ export const StrategyMapPage: React.FC = () => {
           </Col>
           <Col xs={24} sm={12} md={8}>
             <Space direction="vertical" size="small">
-              <Text strong>Display Options</Text>
-              <Space>
-                <Switch 
-                  checked={showConnections} 
-                  onChange={setShowConnections}
-                />
-                <Text>Show Connections</Text>
-              </Space>
+              <Text strong>View Mode</Text>
+              <Select
+                value={activeTab}
+                onChange={setActiveTab}
+                style={{ width: '100%' }}
+              >
+                <Option value="mindmap">Interactive MindMap</Option>
+                <Option value="traditional">BSC Matrix View</Option>
+              </Select>
             </Space>
           </Col>
           <Col xs={24} sm={24} md={8}>
@@ -142,7 +141,7 @@ export const StrategyMapPage: React.FC = () => {
               <Space>
                 <Button 
                   icon={<FullscreenOutlined />}
-                  onClick={() => setActiveTab('map')}
+                  onClick={() => setActiveTab('mindmap')}
                 >
                   Fullscreen
                 </Button>
@@ -238,154 +237,179 @@ export const StrategyMapPage: React.FC = () => {
       </Row>
 
       {/* Main Content */}
-      <Tabs activeKey={activeTab} onChange={setActiveTab} style={{ marginBottom: '24px' }}>
-        <TabPane tab="Strategy Map" key="map">
-          <StrategyMap 
-            selectedDivision={selectedDivision}
-            onObjectiveSelect={handleObjectiveSelect}
-          />
-        </TabPane>
-        
-        <TabPane tab="Objective Details" key="details">
-          {selectedObjective ? (
-            <Card>
-              <Title level={3}>{selectedObjective.name}</Title>
-              <Divider />
-              
-              <Row gutter={[16, 16]}>
-                <Col xs={24} md={12}>
-                  <Space direction="vertical" size="middle" style={{ width: '100%' }}>
-                    <div>
-                      <Title level={5}>Basic Information</Title>
-                      <Space direction="vertical" size="small">
+      <Tabs 
+        activeKey={activeTab} 
+        onChange={setActiveTab} 
+        style={{ marginBottom: '24px' }}
+        items={[
+          {
+            key: 'mindmap',
+            label: 'Interactive MindMap',
+            children: (
+              <InteractiveStrategyMap 
+                selectedDivision={selectedDivision}
+                onObjectiveSelect={handleObjectiveSelect}
+              />
+            )
+          },
+          {
+            key: 'traditional',
+            label: 'BSC Matrix View',
+            children: (
+              <BSCStrategyMap 
+                selectedDivision={selectedDivision}
+                onObjectiveSelect={handleObjectiveSelect}
+              />
+            )
+          },
+          {
+            key: 'details',
+            label: 'Objective Details',
+            children: (
+              selectedObjective ? (
+                <Card>
+                  <Title level={3}>{selectedObjective.name}</Title>
+                  <Divider />
+                  
+                  <Row gutter={[16, 16]}>
+                    <Col xs={24} md={12}>
+                      <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                         <div>
-                          <Text strong>Perspective: </Text>
-                          <Text>{selectedObjective.perspective}</Text>
-                        </div>
-                        <div>
-                          <Text strong>Status: </Text>
-                          <Text>{selectedObjective.status}</Text>
-                        </div>
-                        <div>
-                          <Text strong>Division: </Text>
-                          <Text>{getDivisionName(selectedObjective.division_id)}</Text>
+                          <Title level={5}>Basic Information</Title>
+                          <Space direction="vertical" size="small">
+                            <div>
+                              <Text strong>Perspective: </Text>
+                              <Text>{selectedObjective.perspective}</Text>
+                            </div>
+                            <div>
+                              <Text strong>Status: </Text>
+                              <Text>{selectedObjective.status}</Text>
+                            </div>
+                            <div>
+                              <Text strong>Division: </Text>
+                              <Text>{getDivisionName(selectedObjective.division_id)}</Text>
+                            </div>
+                          </Space>
                         </div>
                       </Space>
-                    </div>
-                  </Space>
-                </Col>
+                    </Col>
+                    
+                    <Col xs={24} md={12}>
+                      <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+                        <div>
+                          <Title level={5}>Related Elements</Title>
+                          <Space direction="vertical" size="small">
+                            <div>
+                              <Text strong>Related Initiatives: </Text>
+                              <Text>{getRelatedInitiatives(selectedObjective.id).length}</Text>
+                            </div>
+                            <div>
+                              <Text strong>Related KPIs: </Text>
+                              <Text>{getRelatedKPIs(selectedObjective.division_id).length}</Text>
+                            </div>
+                          </Space>
+                        </div>
+                      </Space>
+                    </Col>
+                  </Row>
+                </Card>
+              ) : (
+                <Alert
+                  message="No Objective Selected"
+                  description="Click on an objective in the strategy map to view its details here."
+                  type="info"
+                  showIcon
+                  icon={<InfoCircleOutlined />}
+                />
+              )
+            )
+          },
+          {
+            key: 'analysis',
+            label: 'Analysis',
+            children: (
+              <Card>
+                <Title level={4}>Strategy Map Analysis</Title>
+                <Divider />
                 
-                <Col xs={24} md={12}>
-                  <Space direction="vertical" size="middle" style={{ width: '100%' }}>
-                    <div>
-                      <Title level={5}>Related Elements</Title>
+                <Row gutter={[16, 16]}>
+                  <Col xs={24} md={8}>
+                    <Card>
+                      <Title level={5}>Coverage Analysis</Title>
                       <Space direction="vertical" size="small">
                         <div>
-                          <Text strong>Related Initiatives: </Text>
-                          <Text>{getRelatedInitiatives(selectedObjective.id).length}</Text>
+                          <Text>Financial Perspective: </Text>
+                          <Text strong>{stats.byPerspective.Financial} objectives</Text>
                         </div>
                         <div>
-                          <Text strong>Related KPIs: </Text>
-                          <Text>{getRelatedKPIs(selectedObjective.division_id).length}</Text>
+                          <Text>Customer Perspective: </Text>
+                          <Text strong>{stats.byPerspective.Customer} objectives</Text>
+                        </div>
+                        <div>
+                          <Text>Internal Perspective: </Text>
+                          <Text strong>{stats.byPerspective.Internal} objectives</Text>
+                        </div>
+                        <div>
+                          <Text>Learning Perspective: </Text>
+                          <Text strong>{stats.byPerspective.Learning} objectives</Text>
                         </div>
                       </Space>
-                    </div>
-                  </Space>
-                </Col>
-              </Row>
-            </Card>
-          ) : (
-            <Alert
-              message="No Objective Selected"
-              description="Click on an objective in the strategy map to view its details here."
-              type="info"
-              showIcon
-              icon={<InfoCircleOutlined />}
-            />
-          )}
-        </TabPane>
-        
-        <TabPane tab="Analysis" key="analysis">
-          <Card>
-            <Title level={4}>Strategy Map Analysis</Title>
-            <Divider />
-            
-            <Row gutter={[16, 16]}>
-              <Col xs={24} md={8}>
-                <Card>
-                  <Title level={5}>Coverage Analysis</Title>
-                  <Space direction="vertical" size="small">
-                    <div>
-                      <Text>Financial Perspective: </Text>
-                      <Text strong>{stats.byPerspective.Financial} objectives</Text>
-                    </div>
-                    <div>
-                      <Text>Customer Perspective: </Text>
-                      <Text strong>{stats.byPerspective.Customer} objectives</Text>
-                    </div>
-                    <div>
-                      <Text>Internal Perspective: </Text>
-                      <Text strong>{stats.byPerspective.Internal} objectives</Text>
-                    </div>
-                    <div>
-                      <Text>Learning Perspective: </Text>
-                      <Text strong>{stats.byPerspective.Learning} objectives</Text>
-                    </div>
-                  </Space>
-                </Card>
-              </Col>
-              
-              <Col xs={24} md={8}>
-                <Card>
-                  <Title level={5}>Status Overview</Title>
-                  <Space direction="vertical" size="small">
-                    <div>
-                      <Text>Active Objectives: </Text>
-                      <Text strong style={{ color: '#52c41a' }}>
-                        {stats.status.active}
-                      </Text>
-                    </div>
-                    <div>
-                      <Text>Inactive Objectives: </Text>
-                      <Text strong style={{ color: '#f5222d' }}>
-                        {stats.status.inactive}
-                      </Text>
-                    </div>
-                    <div>
-                      <Text>Completion Rate: </Text>
-                      <Text strong>
-                        {stats.total.objectives > 0 ? 
-                          Math.round((stats.status.active / stats.total.objectives) * 100) : 0
-                        }%
-                      </Text>
-                    </div>
-                  </Space>
-                </Card>
-              </Col>
-              
-              <Col xs={24} md={8}>
-                <Card>
-                  <Title level={5}>Recommendations</Title>
-                  <Space direction="vertical" size="small">
-                    {stats.byPerspective.Financial === 0 && (
-                      <Alert message="Consider adding Financial objectives" type="warning" />
-                    )}
-                    {stats.byPerspective.Learning === 0 && (
-                      <Alert message="Consider adding Learning & Growth objectives" type="warning" />
-                    )}
-                    {stats.total.objectives > 0 && stats.status.active / stats.total.objectives < 0.5 && (
-                      <Alert message="Many objectives are inactive" type="info" />
-                    )}
-                    {stats.total.objectives === 0 && (
-                      <Alert message="No objectives defined" type="error" />
-                    )}
-                  </Space>
-                </Card>
-              </Col>
-            </Row>
-          </Card>
-        </TabPane>
-      </Tabs>
+                    </Card>
+                  </Col>
+                  
+                  <Col xs={24} md={8}>
+                    <Card>
+                      <Title level={5}>Status Overview</Title>
+                      <Space direction="vertical" size="small">
+                        <div>
+                          <Text>Active Objectives: </Text>
+                          <Text strong style={{ color: '#52c41a' }}>
+                            {stats.status.active}
+                          </Text>
+                        </div>
+                        <div>
+                          <Text>Inactive Objectives: </Text>
+                          <Text strong style={{ color: '#f5222d' }}>
+                            {stats.status.inactive}
+                          </Text>
+                        </div>
+                        <div>
+                          <Text>Completion Rate: </Text>
+                          <Text strong>
+                            {stats.total.objectives > 0 ? 
+                              Math.round((stats.status.active / stats.total.objectives) * 100) : 0
+                            }%
+                          </Text>
+                        </div>
+                      </Space>
+                    </Card>
+                  </Col>
+                  
+                  <Col xs={24} md={8}>
+                    <Card>
+                      <Title level={5}>Recommendations</Title>
+                      <Space direction="vertical" size="small">
+                        {stats.byPerspective.Financial === 0 && (
+                          <Alert message="Consider adding Financial objectives" type="warning" />
+                        )}
+                        {stats.byPerspective.Learning === 0 && (
+                          <Alert message="Consider adding Learning & Growth objectives" type="warning" />
+                        )}
+                        {stats.total.objectives > 0 && stats.status.active / stats.total.objectives < 0.5 && (
+                          <Alert message="Many objectives are inactive" type="info" />
+                        )}
+                        {stats.total.objectives === 0 && (
+                          <Alert message="No objectives defined" type="error" />
+                        )}
+                      </Space>
+                    </Card>
+                  </Col>
+                </Row>
+              </Card>
+            )
+          }
+        ]}
+      />
 
       {/* Help Information */}
       <Alert
@@ -393,13 +417,19 @@ export const StrategyMapPage: React.FC = () => {
         description={
           <div>
             <Text>
-              • <strong>Navigate:</strong> Use mouse wheel to zoom, click and drag to pan
+              • <strong>MindMap Mode:</strong> Click +/- buttons on nodes to expand/collapse connections
+            </Text><br />
+            <Text>
+              • <strong>Navigate:</strong> Use mouse wheel to zoom, click and drag to pan or move nodes
             </Text><br />
             <Text>
               • <strong>Interact:</strong> Click on objectives to view details and relationships
             </Text><br />
             <Text>
               • <strong>Filter:</strong> Use the division filter to focus on specific areas
+            </Text><br />
+            <Text>
+              • <strong>Expand/Collapse:</strong> Use the expand all/collapse all buttons for quick navigation
             </Text><br />
             <Text>
               • <strong>Analyze:</strong> Review the analysis tab for strategic insights
