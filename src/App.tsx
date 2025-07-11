@@ -12,6 +12,7 @@ import { Initiatives } from './pages/Initiatives';
 import { StrategyMapPage } from './pages/StrategyMapPage';
 import { UserManagement } from './pages/UserManagement';
 import { UserProfile } from './pages/UserProfile';
+import { DataManagement } from './pages/DataManagement';
 import { Test } from './pages/Test';
 import { isSupabaseConfigured } from './lib/supabase';
 
@@ -62,6 +63,7 @@ function App() {
               <Route path="reports" element={<div>Reports (Coming Soon)</div>} />
               <Route path="divisions" element={<Divisions />} />
               <Route path="users" element={<UserManagement />} />
+              <Route path="data-management" element={<DataManagement />} />
               <Route path="profile" element={<UserProfile />} />
               <Route path="settings" element={<div>Settings (Coming Soon)</div>} />
             </Route>

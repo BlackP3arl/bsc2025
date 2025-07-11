@@ -25,7 +25,8 @@ import {
   UserOutlined,
   LogoutOutlined,
   DownOutlined,
-  BranchesOutlined
+  BranchesOutlined,
+  DatabaseOutlined
 } from '@ant-design/icons';
 import { useAuthContext } from './AuthProvider';
 import { useCurrentUser } from '../hooks/useData';
@@ -49,6 +50,7 @@ const menuItems: MenuItem[] = [
   { key: 'reports', label: 'Reports', icon: <FileTextOutlined />, path: '/reports' },
   { key: 'divisions', label: 'Divisions', icon: <TeamOutlined />, path: '/divisions' },
   { key: 'users', label: 'User Management', icon: <UserOutlined />, path: '/users' },
+  { key: 'data-management', label: 'Data Management', icon: <DatabaseOutlined />, path: '/data-management' },
   { key: 'settings', label: 'Settings', icon: <SettingOutlined />, path: '/settings' },
 ];
 
@@ -91,6 +93,9 @@ export const Layout: React.FC = () => {
         case 'divisions':
           // Only Admin and Executive can manage divisions
           return ['Admin', 'Executive'].includes(currentUser.role);
+        case 'data-management':
+          // Only Admin can access data management
+          return currentUser.role === 'Admin';
         case 'settings':
           // Only Admin can access settings
           return currentUser.role === 'Admin';
