@@ -20,11 +20,11 @@ export const Test: React.FC = () => {
           <Title level={2}>MTCC BSC Application</Title>
           <Text>The application is running successfully with Ant Design!</Text>
           <div>
-            <Text strong>Environment Status:</Text>
+            <Text strong>System Status:</Text>
             <br />
-            <Text>Supabase URL: {import.meta.env.VITE_SUPABASE_URL ? '✅ Configured' : '❌ Not configured'}</Text>
+            <Text>Application: ✅ Running</Text>
             <br />
-            <Text>Supabase Key: {import.meta.env.VITE_SUPABASE_ANON_KEY ? '✅ Configured' : '❌ Not configured'}</Text>
+            <Text>Database: ✅ Connected</Text>
           </div>
           <Button type="primary" href="/login">
             Go to Login

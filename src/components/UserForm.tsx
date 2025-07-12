@@ -86,12 +86,25 @@ export const UserForm: React.FC<UserFormProps> = ({
   };
 
   const validatePassword = (_: any, value: string) => {
-    if (!isEdit && (!value || value.length < 8)) {
-      return Promise.reject(new Error('Password must be at least 8 characters'));
+    // SECURITY: Strong password validation
+    if (!isEdit && !value) {
+      return Promise.reject(new Error('Password is required'));
     }
-    if (isEdit && value && value.length < 8) {
-      return Promise.reject(new Error('Password must be at least 8 characters'));
+    
+    if (value && value.length < 12) {
+      return Promise.reject(new Error('Password must be at least 12 characters'));
     }
+    
+    if (value && !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(value)) {
+      return Promise.reject(new Error('Password must contain uppercase, lowercase, number, and special character'));
+    }
+    
+    // Check for common weak passwords
+    const weakPasswords = ['password', '123456', 'qwerty', 'admin', 'welcome'];
+    if (value && weakPasswords.some(weak => value.toLowerCase().includes(weak))) {
+      return Promise.reject(new Error('Password contains common weak patterns'));
+    }
+    
     return Promise.resolve();
   };
 

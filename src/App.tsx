@@ -13,6 +13,7 @@ import { StrategyMapPage } from './pages/StrategyMapPage';
 import { UserManagement } from './pages/UserManagement';
 import { UserProfile } from './pages/UserProfile';
 import { DataManagement } from './pages/DataManagement';
+import { Unauthorized } from './pages/Unauthorized';
 import { Test } from './pages/Test';
 import { isSupabaseConfigured } from './lib/supabase';
 
@@ -46,6 +47,7 @@ function App() {
           <Routes>
             <Route path="/test" element={<Test />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
             <Route
               path="/"
               element={
@@ -61,9 +63,21 @@ function App() {
               <Route path="initiatives" element={<Initiatives />} />
               <Route path="strategy-map" element={<StrategyMapPage />} />
               <Route path="reports" element={<div>Reports (Coming Soon)</div>} />
-              <Route path="divisions" element={<Divisions />} />
-              <Route path="users" element={<UserManagement />} />
-              <Route path="data-management" element={<DataManagement />} />
+              <Route path="divisions" element={
+                <ProtectedRoute requiredRole={['Admin']}>
+                  <Divisions />
+                </ProtectedRoute>
+              } />
+              <Route path="users" element={
+                <ProtectedRoute requiredRole={['Admin']}>
+                  <UserManagement />
+                </ProtectedRoute>
+              } />
+              <Route path="data-management" element={
+                <ProtectedRoute requiredRole={['Admin']}>
+                  <DataManagement />
+                </ProtectedRoute>
+              } />
               <Route path="profile" element={<UserProfile />} />
               <Route path="settings" element={<div>Settings (Coming Soon)</div>} />
             </Route>

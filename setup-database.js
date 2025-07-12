@@ -1,9 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 import { readFileSync } from 'fs';
 
-// Load environment variables
-const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://ksprlnhxkmzugqayctkw.supabase.co';
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcHJsbmh4a216dWdxYXljdGt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIxODgxMzEsImV4cCI6MjA2Nzc2NDEzMX0.C82a1JkHiNAGIBPM_8NBZFSO9oswykSVva-v1fUOex0';
+// Load environment variables - SECURITY: Never hardcode credentials
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('SECURITY ERROR: Missing required Supabase environment variables');
+  console.error('Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file');
+  process.exit(1);
+}
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
