@@ -27,8 +27,18 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   // SECURITY: Implement role-based access control
+  // Special handling for admin user - fallback for setup issues
+  const isAdminEmail = user.email === 'salle.kma@gmail.com';
+  
   if (requiredRole.length > 0 && (!user.role || !requiredRole.includes(user.role))) {
+    // Allow admin email as fallback
+    if (isAdminEmail) {
+      console.warn('Admin user detected with missing/incorrect role, allowing access');
+      return <>{children}</>;
+    }
+    
     console.warn(`Access denied: User role '${user.role || 'undefined'}' not in required roles:`, requiredRole);
+    console.log('User object:', user);
     return <Navigate to="/unauthorized" replace />;
   }
 

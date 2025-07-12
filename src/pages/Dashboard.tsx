@@ -1,4 +1,5 @@
 import React from 'react';
+import { AuthDebug } from '../components/AuthDebug';
 import { 
   Row, 
   Col, 
@@ -134,6 +135,9 @@ export const Dashboard: React.FC = () => {
           Strategic performance overview across all perspectives
         </Text>
       </div>
+
+      {/* Auth Debug (Development Only) */}
+      <AuthDebug />
 
       {/* Stats Cards */}
       <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
