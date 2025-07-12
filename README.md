@@ -10,6 +10,8 @@ A comprehensive strategic performance management platform designed for Maldives 
 - **Interactive Strategy Maps**: Visualize strategic relationships with traditional BSC matrix and mindmap views
 - **Division Management**: Support for 18 MTCC divisions with cascading scorecards
 - **Data Import/Export**: Bulk import capabilities via CSV files
+- **Comprehensive Reporting**: Executive summaries, KPI reports, objectives analysis, and division performance
+- **Export Capabilities**: Export reports in CSV and PDF formats for sharing and archival
 - **Executive Dashboard**: Real-time performance visualization and reporting
 - **Role-based Access Control**: Secure access based on user roles and divisions
 - **Responsive Design**: Mobile-friendly interface with MTCC branding
@@ -157,9 +159,10 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ### Testing the Deployed Application
 
 1. **Strategy Map**: Navigate to `/strategy-map` to test both mindmap and BSC matrix views
-2. **Data Management**: Use `/data-management` to test CSV import functionality
-3. **User Management**: Access `/users` to manage user accounts and roles
-4. **Dashboard**: View `/dashboard` for executive insights
+2. **Reports**: Access `/reports` for comprehensive BSC reporting and analytics
+3. **Data Management**: Use `/data-management` to test CSV import functionality
+4. **User Management**: Access `/users` to manage user accounts and roles
+5. **Dashboard**: View `/dashboard` for executive insights
 
 ### Default Admin Account
 
@@ -182,8 +185,10 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 - [x] Interactive strategy maps (BSC matrix and mindmap views)
 - [x] Data import/export via CSV files
 
-### Phase 3: Advanced Features (In Progress)
-- [x] Advanced analytics and reporting
+### Phase 3: Advanced Features ✅
+- [x] Advanced analytics and reporting system
+- [x] Comprehensive BSC reporting (Executive, KPI, Objectives, Division)
+- [x] Export functionality (CSV, PDF)
 - [ ] Workflow and approval processes
 - [ ] Integration capabilities
 - [ ] Advanced dashboard features

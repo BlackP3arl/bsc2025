@@ -13,6 +13,7 @@ import { StrategyMapPage } from './pages/StrategyMapPage';
 import { UserManagement } from './pages/UserManagement';
 import { UserProfile } from './pages/UserProfile';
 import { DataManagement } from './pages/DataManagement';
+import { Reports } from './pages/Reports';
 import { Unauthorized } from './pages/Unauthorized';
 import { Test } from './pages/Test';
 import { isSupabaseConfigured } from './lib/supabase';
@@ -62,7 +63,7 @@ function App() {
               <Route path="kpis" element={<KPIs />} />
               <Route path="initiatives" element={<Initiatives />} />
               <Route path="strategy-map" element={<StrategyMapPage />} />
-              <Route path="reports" element={<div>Reports (Coming Soon)</div>} />
+              <Route path="reports" element={<Reports />} />
               <Route path="divisions" element={
                 <ProtectedRoute requiredRole={['Admin']}>
                   <Divisions />
