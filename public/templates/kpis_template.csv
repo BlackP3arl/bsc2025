@@ -1,0 +1,5 @@
+name,description,formula,data_source,frequency,units,target_value,threshold_red,threshold_yellow,threshold_green,division_code,owner_email,status
+Revenue Growth Rate,Percentage increase in revenue compared to previous period,(Current Revenue - Previous Revenue) / Previous Revenue * 100,Financial System,Monthly,%,15.0,5.0,10.0,15.0,FD,john.doe@mtcc.com.mv,Active
+Customer Satisfaction Score,Average customer satisfaction rating from surveys,Sum of all ratings / Number of responses,Customer Survey System,Monthly,Score,4.5,3.0,4.0,4.5,CSD,jane.smith@mtcc.com.mv,Active
+Project Completion Time,Average time to complete construction projects,Total project days / Number of projects,Project Management System,Monthly,Days,90,120,105,90,CDD,bob.wilson@mtcc.com.mv,Active
+Employee Training Hours,Total training hours per employee per year,Total training hours / Number of employees,HR System,Quarterly,Hours,40,20,30,40,HRD,alice.brown@mtcc.com.mv,Active
