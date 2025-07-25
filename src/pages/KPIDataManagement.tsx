@@ -36,7 +36,6 @@ import {
   CloseCircleOutlined,
   SearchOutlined,
   FilterOutlined,
-  TeamOutlined,
   EyeOutlined,
   UpOutlined
 } from '@ant-design/icons';
@@ -243,9 +242,6 @@ export const KPIDataManagement: React.FC = () => {
     }
   };
 
-  const getDivisionName = (divisionId: string) => {
-    return divisions?.find(d => d.id === divisionId)?.name || 'Unknown Division';
-  };
 
   const handleViewKPIData = (kpiId: string) => {
     setViewingKPIData(kpiId);
